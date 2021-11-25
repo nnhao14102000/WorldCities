@@ -17,6 +17,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AngularMaterialModule } from './angular-material.module';
 import { ReactiveFormsModule } from '@angular/forms';
 
+import { CityService } from "./cities/city.service";
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -36,7 +38,7 @@ import { ReactiveFormsModule } from '@angular/forms';
     AngularMaterialModule,
     ReactiveFormsModule
   ],
-  providers: [],
+  providers: [CityService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
