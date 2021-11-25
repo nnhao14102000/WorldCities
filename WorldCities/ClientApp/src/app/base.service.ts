@@ -13,6 +13,7 @@ export abstract class BaseService {
         sortOrder: string,
         filterColumn: string,
         filterQuery: string): Observable<ApiResult>;
+        
         abstract get<T>(id: number): Observable<T>;
         abstract put<T>(item: T): Observable<T>;
         abstract post<T>(item: T): Observable<T>;

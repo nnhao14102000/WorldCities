@@ -2,7 +2,6 @@ import { Injectable, Inject } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { BaseService, ApiResult } from '../base.service';
 import { Observable } from 'rxjs';
-import { City } from './city';
 
 @Injectable({
     providedIn: 'root',
@@ -74,6 +73,7 @@ export class CityService extends BaseService {
         }
         return this.http.get<ApiResult>(url, { params });
     }
+    
     isDupeCity(item): Observable<boolean> {
         var url = this.baseUrl + "api/Cities/IsDupeCity";
         return this.http.post<boolean>(url, item);

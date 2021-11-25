@@ -68,12 +68,14 @@ export class CitiesComponent implements OnInit {
     var sortOrder = (this.sort)
       ? this.sort.direction
       : this.defaultSortOrder;
+
     var filterColumn = (this.filterQuery)
       ? this.defaultFilterColumn
       : null;
     var filterQuery = (this.filterQuery)
       ? this.filterQuery
       : null;
+      
     this.cityService.getData<ApiResult<City>>(
       event.pageIndex,
       event.pageSize,
