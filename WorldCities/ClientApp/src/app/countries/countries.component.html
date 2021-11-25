@@ -11,7 +11,7 @@
 </div>
 
 <mat-form-field [hidden]="!countries">
-  <input matInput (keyup)="loadData($event.target.value)"
+  <input matInput (keyup)="onFilterTextChanged($event.target.value)"
          placeholder="Filter by name (or part of it)...">
 </mat-form-field>
 <table mat-table [dataSource]="countries"
