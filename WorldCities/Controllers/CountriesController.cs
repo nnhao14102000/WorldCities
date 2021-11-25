@@ -30,7 +30,8 @@ namespace WorldCities.Controllers
             string filterColumn = null, string filterQuery = null)
         {
             return await ApiResult<Country>.CreateAsync(
-                _context.Countries, pageIndex, pageSize,
+                _context.Countries.Include(c => c.Cities)
+                , pageIndex, pageSize,
                 sortColumn, sortOrder,
                 filterColumn, filterQuery);
         }
