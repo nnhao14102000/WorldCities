@@ -31,8 +31,8 @@ namespace WorldCities.Controllers
             string filterColumn = null, string filterQuery = null)
         {
             return await ApiResult<City>.CreateAsync(
-                _context.Cities, pageIndex, pageSize, 
-                sortColumn, sortOrder, 
+                _context.Cities, pageIndex, pageSize,
+                sortColumn, sortOrder,
                 filterColumn, filterQuery);
         }
 
@@ -111,6 +111,19 @@ namespace WorldCities.Controllers
         private bool CityExists(int id)
         {
             return _context.Cities.Any(e => e.Id == id);
+        }
+
+        [HttpPost]
+        [Route("IsDupeCity")]
+        public bool IsDupeCity(City city)
+        {
+            return _context.Cities.Any(
+                e => e.Name == city.Name
+                && e.Lat == city.Lat
+                && e.Lon == city.Lon
+                && e.CountryId == city.CountryId
+                && e.Id != city.Id
+                );
         }
     }
 }
