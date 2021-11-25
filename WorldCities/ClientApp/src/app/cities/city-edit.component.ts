@@ -6,6 +6,7 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators'
 import { City } from './City';
 import { Country } from './../countries/Country';
+import { BaseFormComponent } from "../base.form.component";
 
 @Component({
   selector: 'app-city-edit',
@@ -13,7 +14,7 @@ import { Country } from './../countries/Country';
   styleUrls: ['./city-edit.component.css']
 })
 
-export class CityEditComponent implements OnInit {
+export class CityEditComponent extends BaseFormComponent implements OnInit {
   // the view title
   title: string;
   // the form model
@@ -32,6 +33,7 @@ export class CityEditComponent implements OnInit {
     private router: Router,
     private http: HttpClient,
     @Inject('BASE_URL') private baseUrl: string) {
+      super();
   }
 
   ngOnInit() {
