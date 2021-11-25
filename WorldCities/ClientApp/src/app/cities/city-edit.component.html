@@ -48,7 +48,7 @@
           Latitude is required.
         </div>
         <div *ngIf="form.get('lat').errors?.pattern">
-          Latitude requires a positive or negative number with 0-4 decimal values.
+          Latitude requires a positive or negative number (1-3 number before .) with 0-4 decimal values.
         </div>
       </div>
     </div>
@@ -67,7 +67,7 @@
           Longitude is required.
         </div>
         <div *ngIf="form.get('lon').errors?.pattern">
-          Longitude requires a positive or negative number with 0-4 decimal values.
+          Longitude requires a positive or negative number (1-3 number before .) with 0-4 decimal values.
           </div>          
       </div>
     </div>
