@@ -1,5 +1,5 @@
 <div class="city-edit">
-  
+
   <h1>{{title}}</h1>
 
   <p *ngIf="this.id && !city"><em>Loading...</em></p>
@@ -7,8 +7,8 @@
   <div class="form" [formGroup]="form" (ngSubmit)="onSubmit()">
 
     <div *ngIf="form.invalid && form.errors &&
-          form.errors?.isDupeCity"
-         class="alert alert-danger">
+      form.errors?.isDupeCity"
+      class="alert alert-danger">
 
       <strong>ERROR</strong>:
       A city with the same <i>name</i>, <i>lat</i>,
@@ -21,12 +21,12 @@
       <label for="name">City name:</label>
       <br />
       <input type="text" id="name"
-             formControlName="name" required
-             placeholder="City name..."
-             class="form-control" />
+        formControlName="name" required
+        placeholder="City name..."
+        class="form-control" />
 
       <div *ngIf="hasError('name')"
-           class="invalid-feedback">           
+        class="invalid-feedback">
         <div *ngIf="form.get('name').errors?.required">
           Name is required.
         </div>
@@ -38,17 +38,18 @@
       <label for="lat">City latitude:</label>
       <br />
       <input type="text" id="lat"
-             formControlName="lat" required
-             placeholder="Latitude..."
-             class="form-control" />
+        formControlName="lat" required
+        placeholder="Latitude..."
+        class="form-control" />
 
       <div *ngIf="hasError('lat')"
-           class="invalid-feedback">
+        class="invalid-feedback">
         <div *ngIf="form.get('lat').errors?.required">
           Latitude is required.
         </div>
         <div *ngIf="form.get('lat').errors?.pattern">
-          Latitude requires a positive or negative number (1-3 number before .) with 0-4 decimal values.
+          Latitude requires a positive or negative number (1-3 number before .)
+          with 0-4 decimal values.
         </div>
       </div>
     </div>
@@ -57,18 +58,19 @@
       <label for="lon">City longitude:</label>
       <br />
       <input type="text" id="lon"
-             formControlName="lon" required
-             placeholder="Latitude..."
-             class="form-control" />
+        formControlName="lon" required
+        placeholder="Latitude..."
+        class="form-control" />
 
       <div *ngIf="hasError('lon')"
-           class="invalid-feedback">
+        class="invalid-feedback">
         <div *ngIf="form.get('lon').errors?.required">
           Longitude is required.
         </div>
         <div *ngIf="form.get('lon').errors?.pattern">
-          Longitude requires a positive or negative number (1-3 number before .) with 0-4 decimal values.
-          </div>          
+          Longitude requires a positive or negative number (1-3 number before .)
+          with 0-4 decimal values.
+        </div>
       </div>
     </div>
 
@@ -85,7 +87,7 @@
       </mat-form-field>
 
       <div *ngIf="hasError('countryId')"
-           class="invalid-feedback">
+        class="invalid-feedback">
         <div *ngIf="form.get('countryId').errors?.required">
           Please select a Country.
         </div>
@@ -94,24 +96,55 @@
 
     <div class="form-group commands">
       <button *ngIf="id" type="submit"
-              (click)="onSubmit()"
-              [disabled]="form.invalid"
-              class="btn btn-success">
+        (click)="onSubmit()"
+        [disabled]="form.invalid"
+        class="btn btn-success">
         Save
       </button>
 
       <button *ngIf="!id" type="submit"
-              (click)="onSubmit()"
-              [disabled]="form.invalid"
-              class="btn btn-success">
+        (click)="onSubmit()"
+        [disabled]="form.invalid"
+        class="btn btn-success">
         Create
       </button>
 
       <button type="button"
-              [routerLink]="['/cities']"
-              class="btn">
+        [routerLink]="['/cities']"
+        class="btn">
         Cancel
       </button>
     </div>
   </div>
+
+  <!-- Form debug info panel -->
+  <div class="card bg-light mb-3">
+    <div class="card-header">Form Debug Info</div>
+    <div class="card-body">
+      <div class="card-text">
+        <div><strong>Form value:</strong></div>
+        <div class="help-block">
+          {{ form.value | json }}
+        </div>
+        <div class="mt-2"><strong>Form status:</strong></div>
+        <div class="help-block">
+          {{ form.status | json }}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Form activity log panel -->
+  <div class="card bg-light mb-3">
+    <div class="card-header">Form Activity Log</div>
+    <div class="card-body">
+      <div class="card-text">
+        <div class="help-block">
+          <span *ngIf="activityLog"
+            [innerHTML]="activityLog"></span>
+        </div>
+      </div>
+    </div>
+  </div>
+
 </div>

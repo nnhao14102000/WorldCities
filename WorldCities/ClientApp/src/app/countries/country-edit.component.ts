@@ -30,6 +30,9 @@ export class CountryEditComponent extends BaseFormComponent implements OnInit {
   // and not NULL when we're editing an existing one.
   id?: number;
 
+  // Activity Log (for debugging purposes)
+  activityLog: string = '';
+
   constructor(
     private fb: FormBuilder,
     private activatedRoute: ActivatedRoute,
@@ -60,7 +63,36 @@ export class CountryEditComponent extends BaseFormComponent implements OnInit {
       ]
     });
 
+    // react to form changes
+    this.form.valueChanges
+      .subscribe(() => {
+        if (!this.form.dirty) {
+          this.log("Form Model has been loaded.");
+        }
+        else {
+          this.log("Form was updated by the user.");
+        }
+      });
+
+    // react to changes in the form.name control
+    this.form.get("name")!.valueChanges
+      .subscribe(() => {
+        if (!this.form.dirty) {
+          this.log("Name has been loaded with initial values.");
+        }
+        else {
+          this.log("Name was updated by the user.");
+        }
+      });
+
+    // Load data fill form
     this.loadData();
+  }
+
+  log(str: string) {
+    this.activityLog += "["
+      + new Date().toLocaleString()
+      + "] " + str + "<br />";
   }
 
   loadData() {
