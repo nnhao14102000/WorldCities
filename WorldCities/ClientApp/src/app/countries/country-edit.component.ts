@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 // import { HttpClient, HttpParams } from '@angular/common/http';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormGroup, FormBuilder, Validators, AbstractControl, AsyncValidatorFn } from '@angular/forms';
@@ -9,12 +9,15 @@ import { Country } from './../countries/Country';
 import { BaseFormComponent } from "../base.form.component";
 import { CountryService } from './country.service';
 
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+
 @Component({
   selector: 'app-country-edit',
   templateUrl: './country-edit.component.html',
   styleUrls: ['./country-edit.component.css']
 })
-export class CountryEditComponent extends BaseFormComponent implements OnInit {
+export class CountryEditComponent extends BaseFormComponent implements OnInit, OnDestroy {
 
   // the view title
   title: string;
@@ -32,6 +35,8 @@ export class CountryEditComponent extends BaseFormComponent implements OnInit {
 
   // Activity Log (for debugging purposes)
   activityLog: string = '';
+
+  private destroySubject: Subject<boolean> = new Subject<boolean>();
 
   constructor(
     private fb: FormBuilder,
@@ -65,6 +70,7 @@ export class CountryEditComponent extends BaseFormComponent implements OnInit {
 
     // react to form changes
     this.form.valueChanges
+      .pipe(takeUntil(this.destroySubject))
       .subscribe(() => {
         if (!this.form.dirty) {
           this.log("Form Model has been loaded.");
@@ -76,6 +82,7 @@ export class CountryEditComponent extends BaseFormComponent implements OnInit {
 
     // react to changes in the form.name control
     this.form.get("name")!.valueChanges
+      .pipe(takeUntil(this.destroySubject))
       .subscribe(() => {
         if (!this.form.dirty) {
           this.log("Name has been loaded with initial values.");
@@ -87,6 +94,13 @@ export class CountryEditComponent extends BaseFormComponent implements OnInit {
 
     // Load data fill form
     this.loadData();
+  }
+
+  ngOnDestroy() {
+    // emit a value with the takeUntil notifier
+    this.destroySubject.next(true);
+    // unsubscribe from the notifier itself
+    this.destroySubject.unsubscribe();
   }
 
   log(str: string) {

@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, Inject, OnInit, OnDestroy } from '@angular/core';
 // import { HttpClient, HttpParams } from '@angular/common/http';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormGroup, FormControl, Validators, AbstractControl, AsyncValidatorFn } from '@angular/forms';
@@ -6,9 +6,13 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators'
 import { City } from './City';
 import { Country } from './../countries/Country';
+
 import { BaseFormComponent } from "../base.form.component";
 import { CityService } from './city.service';
 import { ApiResult } from '../base.service';
+
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-city-edit',
@@ -16,7 +20,7 @@ import { ApiResult } from '../base.service';
   styleUrls: ['./city-edit.component.css']
 })
 
-export class CityEditComponent extends BaseFormComponent implements OnInit {
+export class CityEditComponent extends BaseFormComponent implements OnInit, OnDestroy {
   // the view title
   title: string;
   // the form model
@@ -28,10 +32,12 @@ export class CityEditComponent extends BaseFormComponent implements OnInit {
   // and not NULL when we're editing an existing one.
   id?: number;
   // the countries array for the select
-  countries: Country[];
+  countries: Observable<ApiResult<Country>>;
 
   // Activity Log (for debugging purposes)
   activityLog: string = '';
+
+  private destroySubject: Subject<boolean> = new Subject<boolean>();
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -56,6 +62,7 @@ export class CityEditComponent extends BaseFormComponent implements OnInit {
 
     // react to form changes
     this.form.valueChanges
+      .pipe(takeUntil(this.destroySubject))
       .subscribe(() => {
         if (!this.form.dirty) {
           this.log("Form Model has been loaded.");
@@ -67,6 +74,7 @@ export class CityEditComponent extends BaseFormComponent implements OnInit {
 
     // react to changes in the form.name control
     this.form.get("name")!.valueChanges
+      .pipe(takeUntil(this.destroySubject))
       .subscribe(() => {
         if (!this.form.dirty) {
           this.log("Name has been loaded with initial values.");
@@ -78,6 +86,13 @@ export class CityEditComponent extends BaseFormComponent implements OnInit {
 
     // Load data fill form
     this.loadData();
+  }
+
+  ngOnDestroy() {
+    // emit a value with the takeUntil notifier
+    this.destroySubject.next(true);
+    // unsubscribe from the notifier itself
+    this.destroySubject.unsubscribe();
   }
 
   log(str: string) {
@@ -126,16 +141,15 @@ export class CityEditComponent extends BaseFormComponent implements OnInit {
 
   loadCountries() {
     // fetch all the countries from the server
-    this.cityService.getCountries<ApiResult<Country>>(
-      0,
-      9999,
-      "name",
-      null,
-      null,
-      null,
-    ).subscribe(result => {
-      this.countries = result.data;
-    }, error => console.error(error));
+    this.countries = this.cityService
+      .getCountries<ApiResult<Country>>(
+        0,
+        9999,
+        "name",
+        null,
+        null,
+        null,
+      );
   }
 
   onSubmit() {
