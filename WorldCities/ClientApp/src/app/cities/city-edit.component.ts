@@ -34,9 +34,6 @@ export class CityEditComponent extends BaseFormComponent implements OnInit, OnDe
   // the countries array for the select
   countries: Observable<ApiResult<Country>>;
 
-  // Activity Log (for debugging purposes)
-  activityLog: string = '';
-
   private destroySubject: Subject<boolean> = new Subject<boolean>();
 
   constructor(
@@ -96,9 +93,9 @@ export class CityEditComponent extends BaseFormComponent implements OnInit, OnDe
   }
 
   log(str: string) {
-    this.activityLog += "["
+    console.log("["
       + new Date().toLocaleString()
-      + "] " + str + "<br />";
+      + "] " + str + "<br />");
   }
 
   isDupeCity(): AsyncValidatorFn {

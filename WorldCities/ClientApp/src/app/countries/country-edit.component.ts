@@ -33,9 +33,6 @@ export class CountryEditComponent extends BaseFormComponent implements OnInit, O
   // and not NULL when we're editing an existing one.
   id?: number;
 
-  // Activity Log (for debugging purposes)
-  activityLog: string = '';
-
   private destroySubject: Subject<boolean> = new Subject<boolean>();
 
   constructor(
@@ -104,9 +101,9 @@ export class CountryEditComponent extends BaseFormComponent implements OnInit, O
   }
 
   log(str: string) {
-    this.activityLog += "["
+    console.log("["
       + new Date().toLocaleString()
-      + "] " + str + "<br />";
+      + "] " + str + "<br />");
   }
 
   loadData() {
