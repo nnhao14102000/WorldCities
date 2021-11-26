@@ -5,7 +5,7 @@ VisualStudioVersion = 17.0.31912.275
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WorldCities", "WorldCities\WorldCities.csproj", "{622B0F2D-EC01-4A4D-BDF9-92811753FE19}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WorldCities.Tests", "WorldCities.Tests\WorldCities.Tests.csproj", "{C306C4DC-4681-4BB1-B7C5-BC01825E2B4C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WorldCities.Tests", "WorldCities.Tests\WorldCities.Tests.csproj", "{C306C4DC-4681-4BB1-B7C5-BC01825E2B4C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
