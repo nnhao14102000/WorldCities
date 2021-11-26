@@ -12,6 +12,7 @@ using WorldCities.Data;
 using WorldCities.Data.Models;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using WorldCities.Services;
+using System;
 
 namespace WorldCities
 {
@@ -63,14 +64,26 @@ namespace WorldCities
                 .AddIdentityServerJwt();
 
             // IEmailSender implementation using SendGrid
-            services.AddTransient<IEmailSender, SendGridEmailSender>();
-            services.Configure<SendGridEmailSenderOptions>(options =>
-            {
-                options.ApiKey = Configuration["ExternalProviders:SendGrid:ApiKey"];
-                options.Sender_Email = Configuration["ExternalProviders:SendGrid:Sender_Email"];
-                options.Sender_Name = Configuration["ExternalProviders:SendGrid:Sender_Name"];
-            });
+            //services.AddTransient<IEmailSender, SendGridEmailSender>();
+            //services.Configure<SendGridEmailSenderOptions>(options =>
+            //{
+            //    options.ApiKey = Configuration["ExternalProviders:SendGrid:ApiKey"];
+            //    options.Sender_Email = Configuration["ExternalProviders:SendGrid:Sender_Email"];
+            //    options.Sender_Name = Configuration["ExternalProviders:SendGrid:Sender_Name"];
+            //});
 
+            // IEmailSender implementation using MailKit
+            // (disable it if you want to use the SendGrid-based implementation instead)
+            services.AddTransient<IEmailSender, MailKitEmailSender>();
+            services.Configure<MailKitEmailSenderOptions>(options =>
+            {
+                options.Host_Address = Configuration["ExternalProviders:MailKit:SMTP:Address"];
+                options.Host_Port = Convert.ToInt32(Configuration["ExternalProviders:MailKit:SMTP:Port"]);
+                options.Host_Username = Configuration["ExternalProviders:MailKit:SMTP:Account"];
+                options.Host_Password = Configuration["ExternalProviders:MailKit:SMTP:Password"];
+                options.Sender_EMail = Configuration["ExternalProviders:MailKit:SMTP:Sender_Email"];
+                options.Sender_Name = Configuration["ExternalProviders:MailKit:SMTP:Sender_Name"];
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
