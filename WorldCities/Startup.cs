@@ -10,6 +10,8 @@ using Microsoft.Extensions.Hosting;
 using Serilog;
 using WorldCities.Data;
 using WorldCities.Data.Models;
+using Microsoft.AspNetCore.Identity.UI.Services;
+using WorldCities.Services;
 
 namespace WorldCities
 {
@@ -60,6 +62,14 @@ namespace WorldCities
             services.AddAuthentication()
                 .AddIdentityServerJwt();
 
+            // IEmailSender implementation using SendGrid
+            services.AddTransient<IEmailSender, SendGridEmailSender>();
+            services.Configure<SendGridEmailSenderOptions>(options =>
+            {
+                options.ApiKey = Configuration["ExternalProviders:SendGrid:ApiKey"];
+                options.Sender_Email = Configuration["ExternalProviders:SendGrid:Sender_Email"];
+                options.Sender_Name = Configuration["ExternalProviders:SendGrid:Sender_Name"];
+            });
 
         }
 
